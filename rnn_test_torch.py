@@ -12,7 +12,7 @@ import os
 
 def findFiles(path): return glob.glob(path)
 
-print(findFiles('data/names/*.txt'))
+#print(findFiles('data/names/*.txt'))
 
 import unicodedata
 import string
@@ -27,8 +27,6 @@ def unicodeToAscii(s):
         if unicodedata.category(c) != 'Mn'
         and c in all_letters
     )
-
-print(unicodeToAscii('Ślusàrski'))
 
 # Build the category_lines dictionary, a list of names per language
 category_lines = {}
@@ -46,8 +44,6 @@ for filename in findFiles('data/names/*.txt'):
     category_lines[category] = lines
 
 n_categories = len(all_categories)
-
-print(category_lines['Italian'][:5])
 
 import torch
 
@@ -104,7 +100,6 @@ input = lineToTensor('Albert')
 hidden = torch.zeros(1, n_hidden)
 
 output, next_hidden = rnn(input[0], hidden)
-print(output)
 def categoryFromOutput(output):
     top_n, top_i = output.topk(1)
     category_i = top_i[0].item()
@@ -123,9 +118,9 @@ def randomTrainingExample():
     line_tensor = lineToTensor(line)
     return category, line, category_tensor, line_tensor
 
-for i in range(10):
-    category, line, category_tensor, line_tensor = randomTrainingExample()
-    print('category =', category, '/ line =', line)
+#for i in range(10):
+    #category, line, category_tensor, line_tensor = randomTrainingExample()
+    #print('category =', category, '/ line =', line)
     
 criterion = nn.NLLLoss()
 
@@ -184,6 +179,30 @@ for iter in range(1, n_iters + 1):
     if iter % plot_every == 0:
         all_losses.append(current_loss / plot_every)
         current_loss = 0
+# Keep track of correct guesses in a confusion matrix
+confusion = torch.zeros(n_categories, n_categories)
+n_confusion = 10000
+
+# Just return an output given a line
+def evaluate(line_tensor):
+    hidden = rnn.initHidden()
+
+    for i in range(line_tensor.size()[0]):
+        output, hidden = rnn(line_tensor[i], hidden)
+
+    return output
+
+# Go through a bunch of examples and record which are correctly guessed
+for i in range(n_confusion):
+    category, line, category_tensor, line_tensor = randomTrainingExample()
+    output = evaluate(line_tensor)
+    guess, guess_i = categoryFromOutput(output)
+    category_i = all_categories.index(category)
+    confusion[category_i][guess_i] += 1
+
+# Normalize by dividing every row by its sum
+for i in range(n_categories):
+    confusion[i] = confusion[i] / confusion[i].sum()
 def predict(input_line, n_predictions=3):
     print('\n> %s' % input_line)
     with torch.no_grad():
