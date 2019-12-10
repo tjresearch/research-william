@@ -1,0 +1,72 @@
+% Syslab Research Journal Template
+% By Patrick White
+% September 2019
+
+% INSTRUCTIONS: Edit the text below as appropriate and replace with your journal. Do NOT edit
+%							any section headers or titles, tabling commands, etc.
+
+% Do not edit this header
+\documentclass[letterpaper,11pt]{article}
+\usepackage{fullpage}
+\usepackage{palatino}
+\usepackage{lipsum}
+\def\hrulefill{\leavevmode\leaders\hrule height 20pt\hfill\kern\z@}
+
+% ------------- Edit these definitions ---------------------
+\def\name{William Wang}
+\def\journalnum{10}
+\def\daterange{11/26/19-12/6/19}
+\def\period{4}
+% ------------------ END ---------------------------------
+% Do not edit this
+\begin{document}
+	\thispagestyle{empty}
+	\begin{flushright}
+		{\Large Journal Report \journalnum} \\
+		\daterange\\
+		\name \\
+		Computer Systems Research Lab \\
+		Period \period, White
+		\end{flushright}
+	\hrule height 1pt
+	
+	
+% ------------------- Begin Journal reporting HERE ---------------
+
+% ------ SECTION DAILY LOG -------------------------------------
+	\section*{Daily Log}
+	
+	\vspace{-0.5em}
+		\subsection*{Tuesday November 26}
+		I finished the RNN structure and was able to modify and test it on identifying trigonometric functions and labeling parts of speech.
+		%NOTE: ****delete lipsum commands *******
+		\subsection*{Monday December 2}
+		I took another look at the data and tried to figure out what the best way to organize and train would be.
+		\subsection*{Tuesday December 3}
+		I figured out what structure would be best for my input data: groups of 10 days, where sets of 9 data points are labeled by the tenth. That will constitute my training set.
+		\subsection*{Thursday December 5}
+		I trained today, was able to get decent accuracy (>80), but I need to work out how to interpret the data because different scales would give different accuracies (I have almost 99 percent accuracy with Kelvin, go figure). 
+		\newpage
+	\section*{Timeline}
+	\begin{tabular}{|p{1in}|p{2.5in}|p{2.5in}|}
+		\hline 
+	\textbf{Date} & \textbf{Goal} & \textbf{Met}\\ \hline
+		\hline
+		11/22 & Have an LSTM ready to be trained on data & Yes \\
+		\hline
+		11/29 & Successfully predict the temperature & Yes \\
+		\hline
+		12/6 & Finish other variables & Not yet, still prepping the structure \\
+		\hline
+		12/13 & Interpret results &   \\
+		\hline
+		Winter Goal & Have a full set of results with 75 percent accuracy. & \\
+		\hline
+	\end{tabular}
+
+
+% ------ SECTION REFLECTION  -------------------------------------
+	\section*{Reflection}
+	One of the challenges that I've been putting off for a while was deciding how to structure my data into data sets. At first, I tried to label dates with temperatures, but that proved to be ineffective, as it was difficult to track trends. The sets of ten seem to be working fine for now, however, I should be wary of over-training.
+
+\end{document}

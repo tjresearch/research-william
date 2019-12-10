@@ -31,17 +31,27 @@ def unicodeToAscii(s):
 # Build the category_lines dictionary, a list of names per language
 category_lines = {}
 all_categories = []
-
+temps = open('temps.txt', 'r')
+labeled_temps = {}
+for i in range(0, 1000):
+    category_lines[str(i/10)] = []
+    all_categories.append(str(i/10))
+for line in temps:
+    points = line.split(" ")
+    label = points[9].strip('\n')
+    points = points[:8]
+    category_lines[label].append(points)
+print(labeled_temps)
 # Read a file and split into lines
 def readLines(filename):
     lines = open(filename, encoding='utf-8').read().strip().split('\n')
     return [unicodeToAscii(line) for line in lines]
 
-for filename in findFiles('data/names/*.txt'):
+'''for filename in findFiles('data/names/*.txt'):
     category = os.path.splitext(os.path.basename(filename))[0]
     all_categories.append(category)
     lines = readLines(filename)
-    category_lines[category] = lines
+    category_lines[category] = lines'''
 
 n_categories = len(all_categories)
 
@@ -65,9 +75,9 @@ def lineToTensor(line):
         tensor[li][0][letterToIndex(letter)] = 1
     return tensor
 
-print(letterToTensor('J'))
+#print(letterToTensor('J'))
 
-print(lineToTensor('Jones').size())
+#print(lineToTensor('Jones').size())
 import torch.nn as nn
 
 class RNN(nn.Module):
